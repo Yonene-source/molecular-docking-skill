@@ -1,0 +1,5 @@
+interface:
+  display_name: "植物分子对接 ERA 研究"
+  short_description: "植物领域分子对接、条件MD、自由能与实验闭环的可审计工作流"
+  brand_color: "#7A8060"
+  default_prompt: "Use $molecular-docking-research to execute an auditable plant docking study and benchmark MD capacity before asking for production compute approval."
