@@ -70,6 +70,13 @@
       "prompt": "Membrane context matters, but neither assay composition nor defensible literature bounds are available.",
       "must_include": ["preserve unknown", "request smallest input", "claim limitation", "conditional hypothetical comparison"],
       "must_not_include": ["invent two arbitrary membranes", "mandatory two-model simulation"]
+    },
+    {
+      "id": "git_checkout_package_integrity",
+      "entry_mode": "PACKAGE_VALIDATE",
+      "prompt": "Validate and package the Skill directly from a Git checkout.",
+      "must_include": ["exclude .git metadata", "fresh publication manifest", "pre-package hash verification", "deterministic ZIP"],
+      "must_not_include": ["hash Git objects", "package repository credentials", "accept a stale manifest"]
     }
   ]
 }

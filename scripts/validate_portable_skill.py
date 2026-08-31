@@ -15,6 +15,7 @@ MANIFEST_NAME = "PUBLICATION_MANIFEST.json"
 REQUIRED_FILES = [
     "SKILL.md",
     "README.md",
+    "LICENSE",
     "VALIDATION_REPORT.md",
     ".gitignore",
     "agents/openai.yaml",
@@ -29,6 +30,7 @@ REQUIRED_FILES = [
     "scripts/profile_md_resources.py",
     "scripts/build_publication_manifest.py",
     "scripts/package_release.py",
+    "scripts/test_release_contract.py",
     "benchmarks/portable_scenarios.json",
     "benchmarks/positive_control_asset_policy.json",
     "benchmarks/README.md",
@@ -59,6 +61,25 @@ REQUIRED_SCENARIO_IDS = {
     "plan_side_effect_boundary",
     "canonical_assumption_status",
     "conditional_membrane_bounds",
+    "git_checkout_package_integrity",
+}
+
+EXCLUDED_PARTS = {".git", "__pycache__"}
+
+PUBLICATION_RISK_PATTERNS = {
+    "private_key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
+    "github_token": re.compile(r"(?:gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,})"),
+    "aws_access_key": re.compile(r"AKIA[0-9A-Z]{16}"),
+    "openai_style_key": re.compile(r"\bsk-[A-Za-z0-9]{20,}\b"),
+    "assigned_secret": re.compile(
+        r"(?i)(?:api[_-]?key|secret|token|password)\s*[:=]\s*['\"][^'\"]+['\"]"
+    ),
+    "windows_user_path": re.compile(r"(?i)\b[A-Z]:\\Users\\[^\\\s]+\\"),
+    "posix_home_path": re.compile(r"(?<![<\w])/" + r"home/[^/\s]+/"),
+    "wsl_user_path": re.compile(r"(?i)/mnt/c/" + r"Users/[^/\s]+/"),
+    "private_case_artifact": re.compile(
+        r"(?i)(?:xwechat" + r"_files|codex-" + r"clipboard|20260818_" + r"104439_b00badd5)"
+    ),
 }
 
 
@@ -76,9 +97,25 @@ def package_files(root: Path) -> list[Path]:
         for path in root.rglob("*")
         if path.is_file()
         and path.name != MANIFEST_NAME
-        and "__pycache__" not in path.parts
+        and not EXCLUDED_PARTS.intersection(path.parts)
         and path.suffix != ".pyc"
     )
+
+
+def publication_risk_errors(root: Path) -> list[dict[str, str]]:
+    errors: list[dict[str, str]] = []
+    for path in package_files(root):
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        for rule, pattern in PUBLICATION_RISK_PATTERNS.items():
+            if pattern.search(text):
+                errors.append({
+                    "rule": rule,
+                    "file": path.relative_to(root).as_posix(),
+                })
+    return errors
 
 
 def local_markdown_links(path: Path) -> list[str]:
@@ -166,7 +203,10 @@ def main() -> int:
 
     missing = [relative for relative in REQUIRED_FILES if not (root / relative).is_file()]
     broken_links: list[str] = []
-    markdown_files = sorted(root.rglob("*.md"))
+    markdown_files = sorted(
+        path for path in root.rglob("*.md")
+        if not EXCLUDED_PARTS.intersection(path.parts)
+    )
     for path in markdown_files:
         for target in local_markdown_links(path):
             target_path = (path.parent / target.split("#", 1)[0]).resolve()
@@ -176,7 +216,9 @@ def main() -> int:
     forbidden = sorted(
         path.relative_to(root).as_posix()
         for path in root.rglob("*")
-        if path.is_file() and ("__pycache__" in path.parts or path.suffix == ".pyc")
+        if path.is_file()
+        and ".git" not in path.parts
+        and ("__pycache__" in path.parts or path.suffix == ".pyc")
     )
     combined = "\n".join(path.read_text(encoding="utf-8") for path in markdown_files)
     missing_tokens = [token for token in REQUIRED_TOKENS if token not in combined]
@@ -197,6 +239,7 @@ def main() -> int:
             scenario_errors.append({"id": row.get("id") if isinstance(row, dict) else None, "error": "missing invariant lists"})
 
     semantic_errors = [] if missing else semantic_contract_errors(root)
+    publication_risks = publication_risk_errors(root)
     publication_manifest_errors = manifest_errors(root, args.require_manifest)
     passed = not any([
         missing,
@@ -205,6 +248,7 @@ def main() -> int:
         missing_tokens,
         scenario_errors,
         semantic_errors,
+        publication_risks,
         publication_manifest_errors,
     ])
     files = package_files(root)
@@ -217,6 +261,7 @@ def main() -> int:
         "forbidden_package_files": forbidden,
         "required_contract_tokens_missing": missing_tokens,
         "semantic_contract_errors": semantic_errors,
+        "publication_risk_errors": publication_risks,
         "scenario_errors": scenario_errors,
         "scenario_ids": sorted(value for value in ids if value),
         "publication_manifest_required": args.require_manifest,

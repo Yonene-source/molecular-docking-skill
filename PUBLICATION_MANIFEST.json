@@ -1,19 +1,21 @@
 {
   "schema_version": "molecular_docking_skill_publication_manifest_v1",
-  "created_at": "2026-08-28T10:25:30.317671+00:00",
+  "created_at": "2026-08-31T05:45:39.036183+00:00",
   "manifest_excludes": [
     "PUBLICATION_MANIFEST.json",
+    ".git/",
     "__pycache__/",
     "*.pyc"
   ],
-  "file_count": 23,
+  "file_count": 25,
   "files": {
     ".gitignore": "89e76ac8d8cd86a85de976bde4683109c2eb0025be2e0db97775c86beb62676c",
     "agents/openai.yaml": "44c0043a7ea285dfcdcc8b9a0ae8d87a0b391552ac17c6a90ed9ad6d8065c009",
-    "benchmarks/portable_scenarios.json": "450477c75438726295624b61788284d3ea4109dfc11bfc957269eb8f9664d333",
+    "benchmarks/portable_scenarios.json": "89395b691fa5db56c13632bc0adbb2e13c5818757dfe63a9757a144edd99ae86",
     "benchmarks/positive_control_asset_policy.json": "f4fc2e5f727a8ed0bfa67308b52953931a60e4b30e3f737e344e7c23a130227d",
-    "benchmarks/README.md": "c3bd3fe163e62182318bd4ff66a47ebf06914e9967d00967551882df0038de10",
-    "README.md": "cb5684fc67466815037ba2031967ba6684fcb6eecf34d5556c2c355b741ac083",
+    "benchmarks/README.md": "6c9c8585cf8a8ce94ac2aa8c7bc9deecba5e92da2ee647088e6d114f281917e0",
+    "LICENSE": "b43e35fdef8aee4850763e09615345aea3bd558a53c639ae741874a5ab36830a",
+    "README.md": "553536ef468f71e520f9c4eaf271dbf6d8fabcf9fa61d38749fff45513f3f6ea",
     "references/DOCKING_ASSUMPTION_AND_USER_CHOICE_MATRIX.md": "33e4414479ae02c7a46c0686474c10ca3b7e62fc842b0ccdb6817c673e40353a",
     "references/docking_assumption_catalog.json": "bfe4873bf8ecd496c45c832925d0f00c38334a099be2393d42056525a02c04de",
     "references/METHOD_POSITIVE_CONTROL_REPRODUCTION_CONTRACT.md": "8f14e8c06eb51163d00dc7d8c2094b4d9d9743a69677ae88322449fde897c816",
@@ -22,14 +24,15 @@
     "references/MOLECULAR_DOCKING_RUNTIME_CONTRACT.md": "72561de074e79c91891eb0449711b8487ba4a503dbd3886e03609b6a7768ce8b",
     "references/MOLECULAR_DOCKING_WORKFLOW.md": "8262269dc8f06ab94559f61b82161acf121f9380fa1c3022c1913b366b44b71c",
     "references/PLANT_CONTEXT_AND_MD_FREE_ENERGY_GATE.md": "5287c98475e12990db69051d35eb73f21611f3978664e8967ec05f2ab4a78bdf",
-    "references/PORTABILITY_AND_VALIDATION.md": "5e79c759fb0e5ffa9f5f15ff14db5b80a805715ec3d1769817d6a70a6f91b579",
+    "references/PORTABILITY_AND_VALIDATION.md": "986240bc899eafa7b850c2bf9ed9d4e7adf7600f98d464a49f7c337fdebf65ef",
     "references/REPORT_FIGURE_AND_FILE_MAP_CONTRACT.md": "934307ff3c399e228d7794c32ea93723248e6423ebf81e95a1661ec65b8f88bc",
     "references/STATUS_AND_COMPLETION_PROTOCOL.md": "5315e40b85c6b627cc72e4b84c258855f2f1744632114bb562aef5fd3d7fb6e9",
-    "scripts/build_publication_manifest.py": "e3bb450d331c55db139fb015d4daba6ad812a4a153d9a20f58c532d8cf25170d",
-    "scripts/package_release.py": "af08867364632660723b726891babd902a5cc456d820b11402aafd7fe138287b",
+    "scripts/build_publication_manifest.py": "d2b4396f73f5dfacf8e0ecf99b179c19d8a13ac147b95ce2466000bb085d9c42",
+    "scripts/package_release.py": "44af2fb61c1b73a93e96156128a30c29c7fcdcea4c0438cbbce63bf28d287547",
     "scripts/profile_md_resources.py": "e666128c5c2b3805c4e6695443cd826ece40644ece507483f28fd2b9c3d5738e",
-    "scripts/validate_portable_skill.py": "6dcb5934cec015e32d34ac24fd0cd707b1e7a6abbc67cbe1d193e097ea293a2d",
+    "scripts/test_release_contract.py": "977c280d47916bf3630958c02e922a52a250aeecbad02ec84dfa72664ae0a3aa",
+    "scripts/validate_portable_skill.py": "4a891180b24813d77aa64e4292acf735f6026dc64984fb8095ee22512e8cfc51",
     "SKILL.md": "1eab942804a44c04a58a5a04822d67397b2e3a188f18e173a5ce6985058deeb3",
-    "VALIDATION_REPORT.md": "a148bb8fa32295f58c4603c47b88123068f3620c7c5650856151adec29fddc13"
+    "VALIDATION_REPORT.md": "d3cc3f44e97feae4406fc3cfaaf04c5398d5c4a00e39ffb28acd8d1b863d4df9"
   }
 }

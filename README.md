@@ -2,6 +2,8 @@
 
 An auditable plant-domain molecular-docking Skill for planning, executing, auditing, and validating docking research without treating docking score as affinity or forcing every case into MD.
 
+Licensed under the [MIT License](LICENSE).
+
 ## Entry modes
 
 - `PLAN`: read-only study design, assumptions, alternatives, budgets and approval points.
@@ -31,10 +33,21 @@ For a finalized publication tree:
 ```text
 python scripts/build_publication_manifest.py --skill-root .
 python scripts/validate_portable_skill.py --skill-root . --require-manifest
+python scripts/test_release_contract.py --skill-root .
 python scripts/package_release.py --skill-root . --output-dir <release-directory> --release-id <YYYYMMDD-HHMMSS>
 ```
 
 See [portability and validation](references/PORTABILITY_AND_VALIDATION.md) and [benchmark notes](benchmarks/README.md). Static validation does not prove host-model behavior or scientific accuracy; record separate Agent end-to-end tests.
+
+## Try the Skill
+
+Clone the repository into a Codex skills directory using the Skill folder name declared in `SKILL.md`:
+
+```text
+git clone https://github.com/Yonene-source/molecular-docking-skill.git <CODEX_HOME>/skills/molecular-docking-research
+```
+
+Restart or reload the receiving Agent runtime, then invoke `molecular-docking-research` in `PLAN`, `AUDIT`, `EXECUTE`, or `PACKAGE_VALIDATE` mode. `EXECUTE` never authorizes downloads, installations, external services, production MD, or free-energy calculations by itself.
 
 ## Reports and figures
 

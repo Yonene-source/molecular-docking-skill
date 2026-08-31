@@ -6,11 +6,14 @@ Run from the Skill directory:
 
 ```text
 python scripts/validate_portable_skill.py --skill-root .
+python scripts/test_release_contract.py --skill-root .
 ```
 
-Expected result: JSON with `status: PASSED`, all scenario ids listed, no missing references, no broken local Markdown links, no `__pycache__` or `.pyc` package files, no known mode/status/membrane semantic contradiction, and all required entry modes, MD boundaries and molecular-figure views detected.
+Expected result: JSON with `status: PASSED`, all scenario ids listed, no missing references, no broken local Markdown links, no publication-risk matches, no `__pycache__` or `.pyc` package files, no known mode/status/membrane semantic contradiction, and all required entry modes, MD boundaries and molecular-figure views detected. Running from a Git checkout must exclude `.git` metadata from manifest and archive calculations.
 
 The scenarios are contract fixtures, not scientific accuracy benchmarks. The validator performs static package and contract checks; it cannot prove that an arbitrary host model will obey the contract. A receiving Agent runtime must additionally perform end-to-end output tests that verify each generated plan or audit contains the scenario's `must_include` invariants and excludes `must_not_include` behavior. Record that separate run instead of describing static validation as model-behavior validation.
+
+`test_release_contract.py` is an executable packaging benchmark rather than a wording check. It remains offline and does not touch a scientific case.
 
 The package intentionally does not redistribute third-party experimental coordinates. `benchmarks/positive_control_asset_policy.json` defines the acquisition and blocking rules. Consequently, `PACKAGE_VALIDATE` is fully offline, while a fresh scientific positive-control execution is offline only when an authorized deposited complex has already been packaged with source, license/citation and SHA256 provenance. Otherwise it remains `status: BLOCKED` with `reason_code: USER_INPUT` or `SOFTWARE`; historical result files cannot substitute.
 

@@ -9,6 +9,7 @@ Expected structure:
 ```text
 molecular-docking-research/
 ├── SKILL.md
+├── LICENSE
 ├── PUBLICATION_MANIFEST.json
 ├── agents/openai.yaml
 ├── benchmarks/
@@ -31,6 +32,7 @@ molecular-docking-research/
     ├── build_publication_manifest.py
     ├── package_release.py
     ├── profile_md_resources.py
+    ├── test_release_contract.py
     └── validate_portable_skill.py
 ```
 
@@ -57,6 +59,12 @@ Run the portable standard-library contract benchmark:
 python scripts/validate_portable_skill.py --skill-root .
 ```
 
+Run the offline release integration test. It creates a temporary Git-checkout fixture, builds and validates a manifest, compares two deterministic ZIPs, verifies every archived member against the sidecar SHA256 map, and proves that packaging rejects a stale manifest:
+
+```text
+python scripts/test_release_contract.py --skill-root .
+```
+
 After all publication-tree edits are complete, create and then require the manifest:
 
 ```text
@@ -64,7 +72,7 @@ python scripts/build_publication_manifest.py --skill-root .
 python scripts/validate_portable_skill.py --skill-root . --require-manifest
 ```
 
-The manifest hashes every packaged file except itself and excludes cache bytecode. Any later edit invalidates it and requires deterministic regeneration.
+The manifest hashes every packaged file except itself and excludes Git metadata and cache bytecode. Any later edit invalidates it and requires deterministic regeneration. Validation must also pass when the Skill root is an ordinary Git checkout.
 
 Build a clean ZIP and sidecar manifest only after the manifest-required validation passes:
 
@@ -72,7 +80,7 @@ Build a clean ZIP and sidecar manifest only after the manifest-required validati
 python scripts/package_release.py --skill-root . --output-dir <release-directory> --release-id <YYYYMMDD-HHMMSS>
 ```
 
-The archive has one `molecular-docking-skill/` root, includes hidden `.gitignore`, uses deterministic ZIP member timestamps, and excludes Git metadata and Python caches. The sidecar records archive SHA256, size, member list and the packaged publication-manifest SHA256.
+The archive has one `molecular-docking-skill/` root, includes hidden `.gitignore`, uses deterministic ZIP member timestamps, and excludes Git metadata and Python caches. The packager refuses a stale publication manifest. The sidecar records archive SHA256, size, member list, member SHA256 values, license and the packaged publication-manifest SHA256.
 
 Smoke-test the resource inventory without starting MD:
 
@@ -105,3 +113,5 @@ Before publishing:
 3. rerun the Skill validator, portable benchmark and resource-profiler smoke test on the target computer;
 4. record the tested OS, Python version and validator result;
 5. tag releases only after the package manifest matches the published commit.
+
+Public releases use the MIT License. Attach the ZIP and adjacent sidecar manifest to a versioned GitHub Release; keep generated archives outside the source tree.

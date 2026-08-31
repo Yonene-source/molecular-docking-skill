@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -33,6 +34,26 @@ def included_files(root: Path) -> list[Path]:
     )
 
 
+def verify_publication_manifest(root: Path) -> None:
+    manifest_path = root / MANIFEST_NAME
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError) as exc:
+        raise SystemExit(f"invalid {MANIFEST_NAME}: {exc}") from exc
+    declared = manifest.get("files") if isinstance(manifest, dict) else None
+    if not isinstance(declared, dict):
+        raise SystemExit(f"invalid {MANIFEST_NAME}: files must be an object")
+    actual = {
+        path.relative_to(root).as_posix(): sha256(path)
+        for path in included_files(root)
+        if path.name != MANIFEST_NAME
+    }
+    if declared != actual:
+        raise SystemExit(
+            f"stale {MANIFEST_NAME}; regenerate and validate it before packaging"
+        )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--skill-root", type=Path, required=True)
@@ -43,8 +64,9 @@ def main() -> int:
     output_dir = args.output_dir.resolve()
     if not (root / MANIFEST_NAME).is_file():
         raise SystemExit(f"missing {MANIFEST_NAME}; build and validate it first")
-    if not args.release_id.replace("-", "").replace("_", "").isalnum():
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", args.release_id):
         raise SystemExit("--release-id contains unsupported characters")
+    verify_publication_manifest(root)
     output_dir.mkdir(parents=True, exist_ok=True)
     archive = output_dir / f"molecular-docking-skill-{args.release_id}.zip"
     sidecar = output_dir / f"molecular-docking-skill-{args.release_id}.manifest.json"
@@ -71,6 +93,11 @@ def main() -> int:
         "publication_manifest_sha256": sha256(root / MANIFEST_NAME),
         "file_count": len(files),
         "files": [path.relative_to(root).as_posix() for path in files],
+        "member_sha256": {
+            f"{ARCHIVE_ROOT}/{path.relative_to(root).as_posix()}": sha256(path)
+            for path in files
+        },
+        "license": "MIT",
         "exclusions": [".git/", "__pycache__/", "*.pyc"],
     }
     sidecar.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

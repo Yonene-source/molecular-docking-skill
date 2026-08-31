@@ -31,13 +31,14 @@ def main() -> int:
         path for path in root.rglob("*")
         if path.is_file()
         and path != output
+        and ".git" not in path.parts
         and "__pycache__" not in path.parts
         and path.suffix != ".pyc"
     )
     payload = {
         "schema_version": "molecular_docking_skill_publication_manifest_v1",
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "manifest_excludes": [MANIFEST_NAME, "__pycache__/", "*.pyc"],
+        "manifest_excludes": [MANIFEST_NAME, ".git/", "__pycache__/", "*.pyc"],
         "file_count": len(files),
         "files": {path.relative_to(root).as_posix(): sha256(path) for path in files},
     }
