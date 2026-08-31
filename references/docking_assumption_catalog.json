@@ -1,0 +1,214 @@
+{
+  "schema_version": "docking_assumption_catalog_v2",
+  "status_protocol": {
+    "canonical_field": "assessment_status",
+    "canonical_values": ["ASSESSED", "PARTIALLY_ASSESSED", "NOT_ASSESSED", "BLOCKED", "USER_DEFERRED"],
+    "legacy_ui_field": "current_status",
+    "legacy_ui_values": ["assessed", "partially_assessed", "not_assessed", "blocked", "user_deferred"]
+  },
+  "choices": [
+    {"id": "agent_preview", "label": "Agent先做假设敏感性预检", "effect": "revise_plan_with_bounded_preview"},
+    {"id": "provide_real_conditions", "label": "我提供真实条件/材料", "effect": "request_minimal_real_input"},
+    {"id": "defer", "label": "本轮暂缓", "effect": "preserve_claim_limitation"}
+  ],
+  "items": [
+    {
+      "id": "construct_and_compartment",
+      "group": "生物学身份与构建体",
+      "title": "真实构建体、成熟链与相遇区室",
+      "priority": "critical",
+      "why_it_matters": "标签、缺失末端、剪切、异构体或胞内外方向错误会使整个对接对象或可及性失真。",
+      "action_class": "PREVIEW_THEN_ASK",
+      "low_cost_preview": "公共注释、信号肽/拓扑、全长与结构域模型的一致性检查。",
+      "minimal_real_input": "实际受体构建体序列、标签/融合、表达区室或实验体系。",
+      "claim_limit_if_deferred": "只能讨论参考序列和预测构建体，不能保证与实验材料一致。"
+    },
+    {
+      "id": "functional_state_ensemble",
+      "group": "受体状态",
+      "title": "受体功能状态与非冗余构象",
+      "priority": "high",
+      "why_it_matters": "apo/激活/失活/去敏化状态和域间取向可改变口袋开合与可及性。",
+      "action_class": "AUTO_PREVIEW",
+      "low_cost_preview": "同源状态映射、模型聚类、跨状态口袋和位姿敏感性。",
+      "minimal_real_input": "已知激动剂/拮抗剂、离子条件、功能状态或状态特异结构。",
+      "claim_limit_if_deferred": "候选位点只适用于已测试的预测状态。"
+    },
+    {
+      "id": "oligomeric_state",
+      "group": "受体状态",
+      "title": "寡聚体、异源复合物与界面位点",
+      "priority": "high",
+      "why_it_matters": "单体模型会漏掉复合界面，也可能暴露在真实寡聚体中被遮挡的假口袋。",
+      "action_class": "PREVIEW_THEN_ASK",
+      "low_cost_preview": "家族结构检索、预测装配体比较、界面口袋和遮挡检查。",
+      "minimal_real_input": "实验寡聚状态、互作亚基或纯化体系。",
+      "claim_limit_if_deferred": "不能评价装配体特异位点和寡聚依赖机制。"
+    },
+    {
+      "id": "membrane_context",
+      "group": "膜与溶剂环境",
+      "title": "膜方向、脂质组成、膜电位与受体缺失对照",
+      "priority": "critical",
+      "why_it_matters": "膜厚、叶层、植物脂质/甾醇、膜电位和肽自身膜分配可改变局部浓度、取向与受体依赖性。",
+      "action_class": "PREVIEW_THEN_ASK",
+      "low_cost_preview": "拓扑/膜平面映射和厚度敏感性；仅在文献或生物学给出可辩护边界且方法能区分时比较两个假想膜设置，并设计受体有无的几何或短基准。",
+      "minimal_real_input": "脂质/甾醇组成、pH/离子梯度、膜电位、纳米盘/脂质体/细胞体系。",
+      "claim_limit_if_deferred": "不能判断膜富集、膜扰动或真实膜中位点可及性。"
+    },
+    {
+      "id": "solution_conditions",
+      "group": "膜与溶剂环境",
+      "title": "pH、盐浓度、温度、缓冲液与载体",
+      "priority": "high",
+      "why_it_matters": "质子化、静电屏蔽、构象和聚集行为可能随条件变化。",
+      "action_class": "PREVIEW_THEN_ASK",
+      "low_cost_preview": "合理pH/离子强度区间的微状态与静电敏感性检查。",
+      "minimal_real_input": "实验pH、盐、温度、缓冲液、溶剂/表面活性剂。",
+      "claim_limit_if_deferred": "当前结果只适用于记录的假设微状态和未校准溶液条件。"
+    },
+    {
+      "id": "receptor_chemical_context",
+      "group": "受体化学环境",
+      "title": "离子、辅因子、结构水、糖基化与其他PTM",
+      "priority": "high",
+      "why_it_matters": "占位离子、结构水或糖链可形成桥接，也可直接遮挡口袋。",
+      "action_class": "AUTO_PREVIEW",
+      "low_cost_preview": "已知位点映射、保留/移除敏感性、糖链空间包络和PTM遮挡检查。",
+      "minimal_real_input": "已知糖型、辅因子/金属、质谱或构建体修饰信息。",
+      "claim_limit_if_deferred": "不能排除未建模化学组分对候选位点的改变。"
+    },
+    {
+      "id": "ligand_microstates",
+      "group": "配体状态",
+      "title": "配体微状态、立体化学、端基与非标准残基",
+      "priority": "critical",
+      "why_it_matters": "错误连接、手性、端基或电荷会使所有构象和接触解释失效。",
+      "action_class": "AUTO_PREVIEW",
+      "low_cost_preview": "机器可读化学QC、微状态枚举、端基/手性核验、无效输入隔离。",
+      "minimal_real_input": "合成定义、纯度、端基、立体化学或质谱/色谱说明。",
+      "claim_limit_if_deferred": "只能评价当前结构定义，不能代表未确认的真实样品。"
+    },
+    {
+      "id": "ligand_conformation_and_self_association",
+      "group": "配体状态",
+      "title": "肽构象、诱导折叠、自聚集与浓度",
+      "priority": "high",
+      "why_it_matters": "两亲性肽可能以不同二级结构或寡聚体存在，单体单构象对接会漏机制。",
+      "action_class": "PREVIEW_THEN_ASK",
+      "low_cost_preview": "多构象聚类、螺旋/伸展敏感性、自聚集启发式与浓度情景。",
+      "minimal_real_input": "实验浓度、载体、单体/聚集证据、CD/NMR或批次表征。",
+      "claim_limit_if_deferred": "不能把单体构象结果外推到真实浓度和聚集状态。"
+    },
+    {
+      "id": "site_and_mechanism_space",
+      "group": "位点与机制",
+      "title": "正构、变构、孔道、膜侧、表面与多步机制",
+      "priority": "critical",
+      "why_it_matters": "一个阴性口袋对照只削弱该假说，不能删除远端变构、膜扰动或短暂表面接触。",
+      "action_class": "AUTO_PREVIEW",
+      "low_cost_preview": "竞争位点图、拓扑可及性、同源位点、盲搜与多步路径假说。",
+      "minimal_real_input": "已知功能残基、竞争配体、表型或作用方向。",
+      "claim_limit_if_deferred": "结论只覆盖被实际采样和质控的位点/机制。"
+    },
+    {
+      "id": "receptor_flexibility",
+      "group": "采样与方法",
+      "title": "受体侧链、骨架与诱导契合",
+      "priority": "high",
+      "why_it_matters": "肽配体和低置信环区可能需要局部重排，固定受体会产生假阴性或坏几何。",
+      "action_class": "AUTO_PREVIEW",
+      "low_cost_preview": "侧链松弛、非冗余受体集合、局部骨架或诱导契合的有界比较。",
+      "minimal_real_input": "无；重计算升级时再确认预算。",
+      "claim_limit_if_deferred": "只能评价刚性或已记录的有限柔性模型。"
+    },
+    {
+      "id": "water_and_ion_bridges",
+      "group": "采样与方法",
+      "title": "显式水、离子桥与溶剂竞争",
+      "priority": "medium",
+      "why_it_matters": "干对接中的极性接触可能在水中消失，也可能依赖桥接水/离子。",
+      "action_class": "AUTO_PREVIEW",
+      "low_cost_preview": "结构水保留敏感性、局部溶剂化/最小化和未满足极性原子检查。",
+      "minimal_real_input": "缓冲液和关键离子条件。",
+      "claim_limit_if_deferred": "不能把干接触网络解释为溶液中的稳定相互作用。"
+    },
+    {
+      "id": "specificity_control_panel",
+      "group": "对照与校准",
+      "title": "多序列、受体、方法阳性与算法空白对照",
+      "priority": "critical",
+      "why_it_matters": "单一scrambled对照不足以区分序列偏好、疏水表面热点和流程偏差。",
+      "action_class": "AUTO_PREVIEW",
+      "low_cost_preview": "多种composition/charge/hydrophobicity匹配对照、同源受体/表面对照、已知复合物重对接和标签置换。",
+      "minimal_real_input": "已知阳性/阴性配体、相关受体或内部实验对照。",
+      "claim_limit_if_deferred": "序列特异性和受体特异性证据仍不完整。"
+    },
+    {
+      "id": "method_and_parameter_sensitivity",
+      "group": "对照与校准",
+      "title": "引擎、评分、搜索盒、种子与参数敏感性",
+      "priority": "critical",
+      "why_it_matters": "一个引擎或参数组合的稳定输出可能只是方法偏差。",
+      "action_class": "AUTO_PREVIEW",
+      "low_cost_preview": "盒边界、种子、exhaustiveness、构象和至少一种因果不同方法的有界比较。",
+      "minimal_real_input": "无；超出本地预算时再询问。",
+      "claim_limit_if_deferred": "结论不能外推到未测试的方法和参数。"
+    },
+    {
+      "id": "concentration_kinetics_and_competition",
+      "group": "机制与条件",
+      "title": "浓度、动力学、驻留、协同与内源竞争",
+      "priority": "medium",
+      "why_it_matters": "对接不测kon/koff；膜富集、短暂遭遇和内源配体竞争可改变功能。",
+      "action_class": "PREVIEW_THEN_ASK",
+      "low_cost_preview": "浓度情景、内源配体占位和竞争机制图，不生成虚假动力学数值。",
+      "minimal_real_input": "剂量、暴露时间、内源配体/离子条件和功能读出。",
+      "claim_limit_if_deferred": "不能讨论动力学、竞争强度或剂量依赖。"
+    },
+    {
+      "id": "dynamics_and_membrane_sampling",
+      "group": "动力学与能量",
+      "title": "显式溶剂/膜动力学与受体有无对照",
+      "priority": "high",
+      "why_it_matters": "局部最小化不回答位姿保持、肽逃逸、膜分配或受体依赖。",
+      "action_class": "ASK_BEFORE_HEAVY",
+      "low_cost_preview": "完整参数化预检、短基准、实测ns/day和1/10/100 ns预算。",
+      "minimal_real_input": "膜/缓冲条件、要区分的假说和可接受时间/存储预算。",
+      "claim_limit_if_deferred": "不得声称动力学稳定、驻留或真实膜中保持。"
+    },
+    {
+      "id": "enhanced_sampling_and_free_energy",
+      "group": "动力学与能量",
+      "title": "增强采样与相对/绝对自由能",
+      "priority": "medium",
+      "why_it_matters": "只有明确比较、反应坐标、参数和采样QC时才可能增加信息。",
+      "action_class": "ASK_BEFORE_HEAVY",
+      "low_cost_preview": "方法适用性、反应坐标、窗口/重复数和误差预算设计。",
+      "minimal_real_input": "明确比较问题、候选、预算和可接受的不确定度。",
+      "claim_limit_if_deferred": "不提供亲和力或自由能排序；Vina数值不得替代。"
+    },
+    {
+      "id": "direct_binding_vs_function",
+      "group": "实验闭环",
+      "title": "直接结合、功能、膜扰动与定位的正交区分",
+      "priority": "high",
+      "why_it_matters": "功能变化可能间接产生；无直接结合信号也不排除膜或状态依赖机制。",
+      "action_class": "EXPERT_REVIEW",
+      "low_cost_preview": "把每个假说映射到可区分的结合、电生理、泄漏、竞争和定位读出。",
+      "minimal_real_input": "现有实验平台、样品量、功能表型和阳性/阴性材料。",
+      "claim_limit_if_deferred": "计算证据不能转化为生物学结合或功能结论。"
+    },
+    {
+      "id": "mutation_rescue_and_materials",
+      "group": "实验闭环",
+      "title": "机制型突变、救援、表达质控与材料批次",
+      "priority": "high",
+      "why_it_matters": "破坏折叠的突变不能证明位点；纯度、表达和运输差异会伪造功能效应。",
+      "action_class": "EXPERT_REVIEW",
+      "low_cost_preview": "保守/非保守/远端对照残基组、预期分叉结果和表达/定位质控清单。",
+      "minimal_real_input": "可做的突变、表达体系、肽纯度/批次、检测能力。",
+      "claim_limit_if_deferred": "候选残基仍是预测性、不可归因的实验优先级。"
+    }
+  ]
+}
