@@ -1,0 +1,21 @@
+{
+  "schema_version": "molecular_docking_positive_control_asset_policy_v1",
+  "redistributes_third_party_coordinates": false,
+  "package_validate_requires_scientific_coordinates": false,
+  "current_execution_gate": {
+    "preferred": "authorized deposited complex packaged with source URL or accession, citation/license note, ligand identity, extraction rule, and SHA256",
+    "fallback": "fetch authorized primary coordinates during EXECUTE only when network/download permission and provenance requirements are satisfied",
+    "missing_asset_status": "BLOCKED",
+    "missing_asset_reason_codes": ["USER_INPUT", "SOFTWARE"],
+    "historical_result_gate_influence": "NONE"
+  },
+  "minimum_asset_record": [
+    "accession_or_benchmark_id",
+    "source_url",
+    "retrieved_at",
+    "citation_or_license_note",
+    "coordinate_sha256",
+    "receptor_and_ligand_selection",
+    "method_domain"
+  ]
+}

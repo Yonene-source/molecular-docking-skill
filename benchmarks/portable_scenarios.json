@@ -1,0 +1,75 @@
+{
+  "schema_version": "molecular_docking_skill_portable_benchmark_v1",
+  "scenarios": [
+    {
+      "id": "audit_small_molecule",
+      "entry_mode": "AUDIT",
+      "prompt": "Audit an existing plant protein-small molecule docking result without rerunning it.",
+      "must_include": ["AUDIT", "no recalculation prerequisite", "pose QC", "score is not affinity"],
+      "must_not_include": ["automatic installation", "production MD launch"]
+    },
+    {
+      "id": "modified_peptide_fallback",
+      "entry_mode": "EXECUTE",
+      "prompt": "A fully flexible modified peptide attempt times out once.",
+      "must_include": ["diagnose A", "causally different B or C", "moved degrees of freedom", "chemical representation bundle"],
+      "must_not_include": ["close flexible refinement after one timeout"]
+    },
+    {
+      "id": "unknown_membrane_user_deferred",
+      "entry_mode": "PLAN",
+      "prompt": "Membrane context may matter, real lipids are absent, and the user defers simulation.",
+      "must_include": ["hypothetical only when defensible", "USER_DEFERRED", "claim limitation", "recovery condition"],
+      "must_not_include": ["invent two arbitrary membranes", "claim membrane activity"]
+    },
+    {
+      "id": "md_parameterization_block",
+      "entry_mode": "EXECUTE",
+      "prompt": "A nonstandard residue lacks validated MD parameters.",
+      "must_include": ["status BLOCKED", "reason_code PARAMETERIZATION", "production jobs zero"],
+      "must_not_include": ["BLOCKED_PARAMETERIZATION", "short MD as stability evidence"]
+    },
+    {
+      "id": "no_gpu_capacity",
+      "entry_mode": "PLAN",
+      "prompt": "No supported GPU is visible but CPU and disk are available.",
+      "must_include": ["resource fact", "largest safe local scope", "HPC or cloud export", "user decision"],
+      "must_not_include": ["scientific negative", "automatic production MD"]
+    },
+    {
+      "id": "package_integrity",
+      "entry_mode": "PACKAGE_VALIDATE",
+      "prompt": "Validate a transported Skill directory or ZIP before publication.",
+      "must_include": ["reference-link integrity", "manifest hashes", "no pycache", "portable benchmark"],
+      "must_not_include": ["scientific case compute"]
+    },
+    {
+      "id": "coordinate_figure_delivery",
+      "entry_mode": "EXECUTE",
+      "prompt": "Valid representative pose coordinates exist and a final report is requested.",
+      "must_include": ["whole-system 3D", "local 3D", "2D interaction map", "file map", "source resolution"],
+      "must_not_include": ["score bars as molecular evidence", "loose images in final report directory"]
+    },
+    {
+      "id": "plan_side_effect_boundary",
+      "entry_mode": "PLAN",
+      "prompt": "Design a docking study and assumption matrix without authorization to execute.",
+      "must_include": ["read-only", "proposed assumption register", "budget", "approval point"],
+      "must_not_include": ["write task artifacts", "run preview", "install software", "download data"]
+    },
+    {
+      "id": "canonical_assumption_status",
+      "entry_mode": "PACKAGE_VALIDATE",
+      "prompt": "Validate machine-readable assumption states across the portable Skill and host adapter.",
+      "must_include": ["assessment_status", "uppercase canonical values", "legacy UI adapter", "normalization"],
+      "must_not_include": ["lowercase persistence contract", "compound blocked status"]
+    },
+    {
+      "id": "conditional_membrane_bounds",
+      "entry_mode": "PLAN",
+      "prompt": "Membrane context matters, but neither assay composition nor defensible literature bounds are available.",
+      "must_include": ["preserve unknown", "request smallest input", "claim limitation", "conditional hypothetical comparison"],
+      "must_not_include": ["invent two arbitrary membranes", "mandatory two-model simulation"]
+    }
+  ]
+}
